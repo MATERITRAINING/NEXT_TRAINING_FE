@@ -7,9 +7,9 @@ const nextConfig = {
 
   env: {
     GOOGLE_CLIENT_ID:
-      "138767674693-hngsgfk2crl84cm3ldncqdau0so7ntl5.apps.googleusercontent.com",
-    GOOGLE_CLIENT_SECRET: "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",
-    GOOGLE_API_KEY: "AIzaSyCJM_YcGyxmYKpe9tkfSzwL81Lr-L-ZbCw",
+      "",
+    GOOGLE_CLIENT_SECRET: "",
+    GOOGLE_API_KEY: "",
     NEXTAUTH_SECRET: " eeddddndnfnfnfnfnnfnffn",
     NEXTAUTH_URL: "http://localhost:3000",
     BASE_URL: "http://localhost:1215",
@@ -18,15 +18,6 @@ const nextConfig = {
     domains: ["lh3.googleusercontent.com", "flowbite.com", "localhost"],
   },
 
-  async redirects() {
-    return [
-      {
-        source: "/admin",
-        destination: "/admin/dashboard",
-        permanent: true, // Gunakan true jika ini adalah pengalihan permanen
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig;

@@ -8,17 +8,12 @@ import { useRouter } from "next/navigation";
 import { FiMenu } from "react-icons/fi";
 import { TfiClose } from "react-icons/tfi";
 import { Avatar, Box, Flex, VStack } from "@chakra-ui/react";
-import useAuthLayout from "@/store/ustAuthLayout";
 
 const Nav = () => {
-  const { data: session } = useSession();
   const router = useRouter();
-  console.log("session", session);
 
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const menu = useAuthLayout((state) => state.menu);
-  const setMenu = useAuthLayout((state) => state.setMenu);
 
   return (
     <nav className="flex-between w-full shadow-sm h-full overflow-hidden  bg-white py-3 px-5">
@@ -32,62 +27,55 @@ const Nav = () => {
 
       <Flex align={"center"} flexDir={"row"} spacing="10">
         <Box>
-          {session?.user ? (
-            <div className="flex gap-3 md:gap-5">
-              <button
-                onClick={() => setToggleDropdown(!toggleDropdown)}
-                type="button"
-              >
-                <Avatar
-                  name={session?.user?.name}
-                  src={session?.user?.picture}
-                />
-              </button>
-              {toggleDropdown && (
-                <div className="dropdown_dekstop">
-                  <Link
-                    href="/profile"
-                    className="dropdown_link"
-                    onClick={() => setToggleDropdown(false)}
-                  >
-                    My Profile
-                  </Link>
+          <div className="flex gap-3 md:gap-5">
+            <button
+              onClick={() => setToggleDropdown(!toggleDropdown)}
+              type="button"
+            >
+              <Avatar name={"IHSAN"} />
+            </button>
+            {toggleDropdown && (
+              <div className="dropdown_dekstop">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  My Profile
+                </Link>
 
-                  <button className="mt-5 w-full black_btn" n>
-                    {session.user.name}
-                  </button>
-                  <button className="mt-5 w-full black_btn" n>
-                    <span className="capitalize">
-                      {" "}
-                      Login As {session.user.role}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setToggleDropdown(false);
-                      signOut();
-                    }}
-                    className="mt-5 w-full black_btn"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => {
-                  router.push("/auth/login");
-                }}
-                className="black_btn"
-              >
-                Login
-              </button>
-            </>
-          )}
+                <button className="mt-5 w-full black_btn" n>
+                  {session.user.name}
+                </button>
+                <button className="mt-5 w-full black_btn" n>
+                  <span className="capitalize">
+                    {" "}
+                    Login As {session.user.role}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setToggleDropdown(false);
+                    signOut();
+                  }}
+                  className="mt-5 w-full black_btn"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/auth/login");
+            }}
+            className="black_btn"
+          >
+            Login
+          </button>
         </Box>
         <Box
           display={{
@@ -95,13 +83,7 @@ const Nav = () => {
             lg: "none",
           }}
           marginLeft={2}
-        >
-          {menu ? (
-            <TfiClose onClick={setMenu} className="w-8 h-8 " />
-          ) : (
-            <FiMenu onClick={setMenu} className="w-10 h-10 " />
-          )}
-        </Box>
+        ></Box>
       </Flex>
     </nav>
   );

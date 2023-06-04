@@ -9,34 +9,19 @@ export default async function Home() {
   return (
     <section className="w-full flex-center flex-col">
       <h1 className="head_text text-center">
-       BPKP
+        BPKP
         <br className="max-md:hidden" />
-        <span className="orange_gradient text-center">TRAINING IMPLEMENTASI NEXTJS</span>
+        <span className="orange_gradient text-center">
+          TRAINING IMPLEMENTASI NEXTJS
+        </span>
       </h1>
       <div className="mt-5 space-x-5">
         <Link href="/admin">
-          <button className="button_link">
-            {" "}
-            Page Admin
-          </button>
+          <button className="button_link"> Page Admin</button>
         </Link>
-        <Link href="/app-ssr">
-          <button className=" button_link">
-            {" "}
-            SSR
-          </button>
-        </Link>
-        <Link href="/app-isr">
-          <button className=" button_link">
-            {" "}
-           ISR
-          </button>
-        </Link>
+
         <Link href="/member">
-          <button className=" button_link">
-            {" "}
-          Page Member
-          </button>
+          <button className=" button_link"> Page Member</button>
         </Link>
       </div>
     </section>

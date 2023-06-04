@@ -1,19 +1,17 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { Flex, VStack } from "@chakra-ui/layout";
 import { usePathname } from "next/navigation";
-import useAuthMiddleware from "@/hook/useAuthMiddleware";
+
 import { HiBookOpen } from "react-icons/hi2";
 import { Text, Heading } from "@chakra-ui/react";
 import clsx from "clsx";
-import useAuthLayout from "@/store/ustAuthLayout";
-const AdminLayout = ({ children }) => {
-  const menu = useAuthLayout((state) => state.menu);
-  const minimize = useAuthLayout((state) => state.minimize);
-  const setMinimize = useAuthLayout((state) => state.setMinimize);
+
+function AdminLayout({ children }) {
+  const menu = false;
+  const [minimize, setMinimize] = useState(false);
 
   const [activeLink, setActiveLink] = useState("");
   const pathname = usePathname();
@@ -40,9 +38,14 @@ const AdminLayout = ({ children }) => {
       path: "/admin/berita",
     },
   ];
-
   return (
-    <Flex h="100%" flexDir={"row"} overflow={"hidden"} w={"100%"}>
+    <Flex
+      h="100%"
+      flexDir={"row"}
+      overflow={"hidden"}
+      w={"100%"}
+      backgroundColor={"red"}
+    >
       <Flex
         transform={{
           base: menu ? "translate(0, 0)" : "translate(-100%, 0)",
@@ -107,14 +110,13 @@ const AdminLayout = ({ children }) => {
             </VStack>
           </Box>
           <Box>
-            <button onClick={setMinimize}>X</button>
+            <button onClick={() => setMinimize(!minimize)}>X</button>
           </Box>
         </Flex>
       </Flex>
       <Flex
         backgroundColor={"#F7F7F7"}
         overflow={"scroll"}
-       
         w={{
           base: "100%",
           lg: minimize ? "95%" : "85%",
@@ -124,6 +126,6 @@ const AdminLayout = ({ children }) => {
       </Flex>
     </Flex>
   );
-};
+}
 
 export default AdminLayout;
