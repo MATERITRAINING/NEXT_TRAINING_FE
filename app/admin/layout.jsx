@@ -115,7 +115,7 @@ function AdminLayout({ children }) {
         </Flex>
       </Flex>
       <Flex
-        backgroundColor={"#F7F7F7"}
+        backgroundColor={"red"}
         overflow={"scroll"}
         w={{
           base: "100%",

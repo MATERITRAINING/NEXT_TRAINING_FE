@@ -1,12 +1,9 @@
-
-"use client";
-
 import React from 'react'
 
-function Page() {
+function PAge() {
   return (
-    <div className="h-full w-full overflow-auto p-5">Dashboard</div>
+    <div>PAge</div>
   )
 }
 
-export default Page
+export default PAge
