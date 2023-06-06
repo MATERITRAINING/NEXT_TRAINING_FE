@@ -44,7 +44,7 @@ function AdminLayout({ children }) {
       flexDir={"row"}
       overflow={"hidden"}
       w={"100%"}
-      backgroundColor={"red"}
+     
     >
       <Flex
         transform={{
@@ -115,7 +115,7 @@ function AdminLayout({ children }) {
         </Flex>
       </Flex>
       <Flex
-        backgroundColor={"red"}
+       
         overflow={"scroll"}
         w={{
           base: "100%",

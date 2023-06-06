@@ -12,11 +12,14 @@ import { Avatar, Box, Flex, VStack } from "@chakra-ui/react";
 const Nav = () => {
   const router = useRouter();
 
+  const { data: session } = useSession();
+
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   return (
     <nav className="flex-between w-full shadow-sm h-full overflow-hidden  bg-white py-3 px-5">
+      {/* {JSON.stringify(session.user.users)} */}
       <section>
         <Link href="/" className="flex gap-2 flex-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
@@ -27,55 +30,49 @@ const Nav = () => {
 
       <Flex align={"center"} flexDir={"row"} spacing="10">
         <Box>
-          <div className="flex gap-3 md:gap-5">
+          {session ? (
+            <div className="flex gap-3 md:gap-5">
+              <button
+                onClick={() => setToggleDropdown(!toggleDropdown)}
+                type="button"
+              >
+                <Avatar name={"IHSAN"} />
+              </button>
+              {toggleDropdown && (
+                <div className="dropdown_dekstop">
+                  <button className="mt-5 w-full black_btn" n>
+                    {session?.user?.users?.name}
+                  </button>
+                  <button className="mt-5 w-full black_btn" n>
+                    <span className="capitalize">
+                      {" "}
+                      Login As {session?.user?.users?.role}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setToggleDropdown(false);
+                      signOut();
+                    }}
+                    className="mt-5 w-full black_btn"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
             <button
-              onClick={() => setToggleDropdown(!toggleDropdown)}
               type="button"
+              onClick={() => {
+                router.push("/auth/login");
+              }}
+              className="black_btn"
             >
-              <Avatar name={"IHSAN"} />
+              Login
             </button>
-            {toggleDropdown && (
-              <div className="dropdown_dekstop">
-                <Link
-                  href="/profile"
-                  className="dropdown_link"
-                  onClick={() => setToggleDropdown(false)}
-                >
-                  My Profile
-                </Link>
-
-                <button className="mt-5 w-full black_btn" n>
-                  {session.user.name}
-                </button>
-                <button className="mt-5 w-full black_btn" n>
-                  <span className="capitalize">
-                    {" "}
-                    Login As {session.user.role}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setToggleDropdown(false);
-                    signOut();
-                  }}
-                  className="mt-5 w-full black_btn"
-                >
-                  Sign Out
-                </button>
-              </div>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              router.push("/auth/login");
-            }}
-            className="black_btn"
-          >
-            Login
-          </button>
+          )}
         </Box>
         <Box
           display={{

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useFormik, FormikProvider } from "formik";
 import * as Yup from "yup";
 import { Box, Center, VStack } from "@chakra-ui/react";
@@ -9,6 +9,7 @@ import { useToast } from "@chakra-ui/react";
 import { login } from "@/services/authService";
 import { FcGoogle } from "react-icons/fc";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import {
   FormControl,
@@ -34,6 +35,7 @@ const LoginSchema = Yup.object({
 
 export default function Login() {
   const toast = useToast();
+  const router = useRouter();
   const { data: session, status } = useSession();
 
   console.log("session", session);
@@ -62,10 +64,10 @@ export default function Login() {
       });
 
       await signIn("credentials", {
-        users: response.data.user,
+        users: JSON.stringify(response.data.user),
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
-        redirect : true
+        redirect: false,
       });
     } catch (err) {
       console.log("err", err.response);
@@ -115,6 +117,16 @@ export default function Login() {
   // ...
 
   // Fungsi untuk menampilkan pesan kesalahan saat respons gagal login diterima
+
+  useEffect(() => {
+    if (session) {
+      if (session.user.users.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/member");
+      }
+    }
+  }, [session, router]);
 
   return (
     <Center axis="both" h="100vh">

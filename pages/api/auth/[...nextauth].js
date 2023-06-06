@@ -12,19 +12,47 @@ export const authOptions = {
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
-  
+
       credentials: {},
       async authorize(credentials, req) {
+        console.log("credentials", credentials);
 
-      console.log('credentials', credentials) 
-      
-      return false
-
-
-        
+        return {
+          ...credentials,
+        };
       },
     }),
   ],
+
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
+    async session({ session, user, token }) {
+      session.user = { ...token, users: JSON.parse(token.users) };
+
+      return session;
+    },
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        console.log("session", session);
+        return {
+          ...token,
+          user : session.user,      
+          accessToken: session.user.accessToken,
+          refreshToken: session.user.refreshToken,
+          
+        };
+      }
+      return {
+        ...token,
+        ...user,
+      };
+    },
+  },
 
   pages: {
     signIn: "/auth/login",

@@ -1,6 +1,5 @@
 import CustomChakra from "@/components/CustomChakra";
 import Provider from "@/components/Provider";
-
 import "react-datepicker/dist/react-datepicker.css";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import "./globals.css";
@@ -18,28 +17,30 @@ export default function RootLayout({ children, session }) {
       <head />
       <body>
         <Provider>
-          <CustomChakra>
-            <main>
-              <div
-                style={{
-                  overflow: "hidden",
-                }}
-                className=" h-screen w-screen overflow-visible antialiased text-gray-700 border "
-              >
-                <section className="h-[10%] w-full">
-                  <Nav />
-                </section>
-                <section
+          <ReactQuery>
+            <CustomChakra>
+              <main>
+                <div
                   style={{
                     overflow: "hidden",
                   }}
-                  className="h-[90%] w-full "
+                  className=" h-screen w-screen overflow-visible antialiased text-gray-700 border "
                 >
-                  {children}
-                </section>
-              </div>
-            </main>
-          </CustomChakra>
+                  <section className="h-[10%] w-full">
+                    <Nav />
+                  </section>
+                  <section
+                    style={{
+                      overflow: "hidden",
+                    }}
+                    className="h-[90%] w-full "
+                  >
+                    {children}
+                  </section>
+                </div>
+              </main>
+            </CustomChakra>
+          </ReactQuery>
         </Provider>
       </body>
     </html>
