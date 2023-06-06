@@ -67,7 +67,7 @@ export default function Login() {
   const onSubmit = async (values) => {
     try {
       const response = await authService.login(values);
-      // const permission = await authService.permission(response.data.user.id);
+      const permission = await authService.permissionById(response.data.user.id);
 
       toast({
         title: "Success",
@@ -84,7 +84,7 @@ export default function Login() {
         picture: response.data.user.picture,
         role: response.data.user.role,
         id: response.data.user.id,
-        // permission: JSON.stringify( permission.data),
+        permission: JSON.stringify( permission.data),
         redirect: true,
       });
     } catch (err) {

@@ -5,9 +5,10 @@ const authService = {
     return client.post("/login", payload);
   },
 
-  async permission(id) {
-    return client.get(`/permission/${id}`);
+  async permissionById(id) {
+    return client.get(`/permission-by-id/${id}/`);
   },
+  
 
   async googleLogin(payload) {
     return client.post("/google-login", payload);
