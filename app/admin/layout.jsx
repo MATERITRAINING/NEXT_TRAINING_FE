@@ -10,11 +10,14 @@ import { HiBookOpen } from "react-icons/hi2";
 import { Text, Heading } from "@chakra-ui/react";
 import clsx from "clsx";
 import useAuthLayout from "@/store/ustAuthLayout";
+import { useSession } from "next-auth/react";
 const AdminLayout = ({ children }) => {
   const menu = useAuthLayout((state) => state.menu);
   const minimize = useAuthLayout((state) => state.minimize);
   const setMinimize = useAuthLayout((state) => state.setMinimize);
 
+  const { data: session } = useSession();
+ 
   const [activeLink, setActiveLink] = useState("");
   const pathname = usePathname();
   useEffect(() => {
@@ -114,7 +117,6 @@ const AdminLayout = ({ children }) => {
       <Flex
         backgroundColor={"#F7F7F7"}
         overflow={"scroll"}
-       
         w={{
           base: "100%",
           lg: minimize ? "95%" : "85%",

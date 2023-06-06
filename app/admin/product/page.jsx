@@ -257,7 +257,7 @@ const Konsep = () => {
             setParams={setParams}
             params={params}
             pageSize={params.pageSize}
-            total={data?.pagination?.total}
+            total={Number(data?.pagination?.total)}
           />
         </TableContainer>
       </Box>

@@ -1,14 +1,14 @@
 import useAxiosAuth from "@/hook/useAxiosAuth";
 import { create } from "zustand";
 import { useSession } from "next-auth/react";
-import useAuthService from "@/service/profileServices";
+import useAuthService from "@/service/usePermission";
 
 const useAuthStore = create((set) => ({
   user: {},
   role: [],
   loading: false,
-  setProfileUser: (newUser) => {
-    console.log("new", newUser);
+  setPermissionUser: (newUser) => {
+    
     set((state) => ({
       user: {
         email: newUser.user.email,
@@ -16,7 +16,7 @@ const useAuthStore = create((set) => ({
         role: newUser.user.role,
       },
 
-      role: newUser.permission,
+      permission: newUser.permissions,
     }));
   },
   count: 0,

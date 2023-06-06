@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, useFormik, FormikProvider } from "formik";
 import * as Yup from "yup";
-import { Box, Center,  VStack, useToast } from "@chakra-ui/react";
+import { Box, Center, VStack, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
@@ -21,7 +21,7 @@ import {
   Heading,
   Grid,
 } from "@chakra-ui/react";
-import { login } from "@/service/auth";
+import authService from "@/service/authService";
 import LoadingPage from "@/components/LoadingPage";
 
 const LoginSchema = Yup.object({
@@ -64,7 +64,10 @@ export default function Login() {
   };
   const onSubmit = async (values) => {
     try {
-      const response = await login(values);
+      const response = await authService.login(values);
+      // const permission = await authService.permission(response.data.user.id);
+
+     
 
       toast({
         title: "Success",
@@ -81,12 +84,10 @@ export default function Login() {
         picture: response.data.user.picture,
         role: response.data.user.role,
         id: response.data.user.id,
+        // permission: JSON.stringify( permission.data),
         redirect: true,
       });
-
-      
     } catch (err) {
-      
       if (err.response.status === 422) {
         toast({
           title: "Warning",
@@ -108,7 +109,6 @@ export default function Login() {
   const initialValues = {
     email: "",
     password: "",
-    
   };
 
   const formik = useFormik({

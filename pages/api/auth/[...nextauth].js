@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { googleLogin } from "@/service/auth";
+import authService from "@/service/authService";
 
 
 export const authOptions = {
@@ -36,7 +36,7 @@ export const authOptions = {
     async signIn({account, user}){
       if (account?.provider === "google") {
         try{
-          await googleLogin({ email: user.email });
+          await authgoogleLogin({ email: user.email });
 
           return true
 
@@ -49,7 +49,7 @@ export const authOptions = {
     },
     async jwt({ token, user, account, trigger, session }) {
       if (account?.provider === "google") {
-        const res = await googleLogin({ email: token.email });
+        const res = await authService.googleLogin({ email: token.email });
 
         return {
           ...token,

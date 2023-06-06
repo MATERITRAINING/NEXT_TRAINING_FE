@@ -1,7 +1,7 @@
 import useAxiosAuth from "@/hook/useAxiosAuth";
 import { create } from "zustand";
 import { useSession } from "next-auth/react";
-import useAuthService from "@/service/profileServices";
+import useAuthService from "@/service/usePermission";
 
 const useAuthLayout = create((set) => ({
   menu: false,

@@ -13,7 +13,7 @@ import useAuthLayout from "@/store/ustAuthLayout";
 const Nav = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log("session", session);
+ 
 
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
