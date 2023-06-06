@@ -34,10 +34,10 @@ const LoginSchema = Yup.object({
 
 export default function Login() {
   const toast = useToast();
-  const {data : session , status } = useSession()
+  const { data: session, status } = useSession();
 
-  console.log('session', session)
-  console.log('status', status)
+  console.log("session", session);
+  console.log("status", status);
   const [show, setShow] = React.useState(false);
   const initialValues = {
     email: "",
@@ -59,6 +59,13 @@ export default function Login() {
         duration: 1000,
         isClosable: true,
         position: "top-right",
+      });
+
+      await signIn("credentials", {
+        users: response.data.user,
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+        redirect : true
       });
     } catch (err) {
       console.log("err", err.response);
@@ -187,7 +194,7 @@ export default function Login() {
                 width={"100%"}
                 color={"white"}
                 backgroundColor={"red"}
-                onClick={()=> signIn()}
+                onClick={() => signIn()}
               >
                 Cancel
               </Button>
