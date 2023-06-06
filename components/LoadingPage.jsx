@@ -16,8 +16,9 @@ const LoadingPage = ({ children }) => {
   if(status === 'loading') {
     return <Spinner/>
   }
-
   console.log('user', user)
+
+  console.log('session', session)
   return <>{children}</>;
 };
 

@@ -4,9 +4,10 @@ import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/useAuthStore";
 
 const usePermission = () => {
+  const { data: session, update } = useSession();
   const axiosAuth = useAxiosAuth();
   const setPermissionUser = useAuthStore((state) => state.setPermissionUser);
-  const { data: session } = useSession();
+
   const { data, isFetching, isLoading } = useQuery(
     ["/permission"],
     () => axiosAuth.get("/permission"),
@@ -17,11 +18,20 @@ const usePermission = () => {
       refetchInterval: 1000 * 60 * 60,
 
       select: (response) => response.data,
-      onSuccess : (data) => {
-        console.log('nerjal', data)
-        setPermissionUser(data)
-      }
+      onSuccess: async (data) => {
 
+        console.log('data', data)
+       
+        setPermissionUser(data);
+
+        await update({
+          ...session,
+          user: {
+            ...session.user,
+            permissions: data.permissions,
+          },
+        });
+      },
     }
   );
 

@@ -29,10 +29,12 @@ import { useEffect, useState } from "react";
 // }
 
 export default function useDebounce({ onSubmit, delay }) {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState(null);
   useEffect(() => {
     const handler = setTimeout(() => {
-      onSubmit(keyword);
+      if(keyword !== null){
+        onSubmit(keyword);
+      }
     }, delay);
 
     return () => {

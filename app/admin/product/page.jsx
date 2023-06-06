@@ -108,6 +108,7 @@ const Konsep = () => {
 
   return (
     <div className="h-full w-full p-5 ">
+      {JSON.stringify(params)}
       <DrawerFilter
         title="Filter Artikel"
         isOpen={drawerFilter.isOpen}

@@ -7,6 +7,7 @@ import { Box, Center, VStack, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
+import useAuthStore from "@/store/useAuthStore";
 
 import {
   FormControl,
@@ -31,6 +32,7 @@ const LoginSchema = Yup.object({
 
 export default function Login() {
   const { data: session, status } = useSession();
+  const user = useAuthStore((state) => state.user);
   const [show, setShow] = React.useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
@@ -67,8 +69,6 @@ export default function Login() {
       const response = await authService.login(values);
       // const permission = await authService.permission(response.data.user.id);
 
-     
-
       toast({
         title: "Success",
         description: response.data.msg,
@@ -76,7 +76,7 @@ export default function Login() {
         isClosable: true,
       });
 
-      const res = await signIn("credentials", {
+      await signIn("credentials", {
         email: response.data.user.email,
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,

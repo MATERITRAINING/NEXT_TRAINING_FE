@@ -5,18 +5,20 @@ import useAuthService from "@/service/usePermission";
 
 const useAuthStore = create((set) => ({
   user: {},
-  role: [],
   loading: false,
   setPermissionUser: (newUser) => {
+
+    console.log('new', newUser)
     
     set((state) => ({
       user: {
         email: newUser.user.email,
         name: newUser.user.id,
-        role: newUser.user.role,
+        permissions: newUser.permissions,
+       
       },
 
-      permission: newUser.permissions,
+     
     }));
   },
   count: 0,
