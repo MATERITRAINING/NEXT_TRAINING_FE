@@ -6,8 +6,6 @@ import { useRefreshToken } from "./useRefreshToken";
 
 const useAxiosAuth = () => {
   const { data: session } = useSession();
-
-  console.log('ses', session)
   const { refreshToken } = useRefreshToken();
 
   useEffect(() => {
@@ -38,10 +36,8 @@ const useAxiosAuth = () => {
             ] = `Bearer ${session?.user?.accessToken}`;
             return axiosClient(prevRequest);
           } catch (err) {
-            
-              signOut();
-              window.location.replace("/auth/login");
-            
+            signOut();
+            window.location.replace("/auth/login");
           }
         } else {
           return Promise.reject(error);

@@ -16,7 +16,7 @@ export default function RootLayout({ children, session }) {
     <html lang="">
       <head />
       <body>
-        <Provider>
+        <Provider session={session}>
           <ReactQuery>
             <CustomChakra>
               <main>

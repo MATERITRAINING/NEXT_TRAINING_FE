@@ -18,15 +18,16 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik, useFormik, FormikProvider } from "formik";
 import InputRangeDate from "@/components/InputRange";
-const FilterArtikel = ({ value, onSubmit, onReset, onClose }) => {
+const FilterProduct = ({ value, submitFilter, resetFilter, onClose }) => {
   const formik = useFormik({
     initialValues: {
       ...value,
     },
-    onSubmit: onSubmit,
-
+    onSubmit: submitFilter,
     enableReinitialize: true,
   });
+
+ 
   let {
     values,
     errors,
@@ -39,9 +40,11 @@ const FilterArtikel = ({ value, onSubmit, onReset, onClose }) => {
     setFieldValue,
   } = formik;
 
+
+  
   return (
     <FormikProvider value={values}>
-      {JSON.stringify(values)}
+      
       <Form onSubmit={handleSubmit}>
         <FormControl>
           <FormLabel color="#38A169" htmlFor="name" fontWeight="semibold">
@@ -61,7 +64,7 @@ const FilterArtikel = ({ value, onSubmit, onReset, onClose }) => {
             htmlFor="description"
             fontWeight="semibold"
           >
-            Nama Product
+            Deskripsi Product
           </FormLabel>
           <Input
             id="description"
@@ -98,7 +101,7 @@ const FilterArtikel = ({ value, onSubmit, onReset, onClose }) => {
         <Flex gap={2}>
           <Button
             onClick={() => {
-              onReset();
+              resetFilter();
               onClose();
             }}
             type="button"
@@ -112,4 +115,4 @@ const FilterArtikel = ({ value, onSubmit, onReset, onClose }) => {
   );
 };
 
-export default FilterArtikel;
+export default FilterProduct;
