@@ -18,6 +18,8 @@ import {
   Spacer,
   VStack,
   IconButton,
+  Box,
+  
 } from "@chakra-ui/react";
 import { Form, Formik, useFormik, FormikProvider } from "formik";
 import * as Yup from "yup";
@@ -71,10 +73,9 @@ const Create = () => {
     setFieldValue,
   } = formik;
   return (
-    <div className="h-full w-full p-10">
-      {JSON.stringify(values)}
+    <div className="h-full w-full b">
       <FormikProvider value={values}>
-        <Flex align={"center"} justify={"center"}>
+        <Flex align={"center"} justify={"center"} w={"100%"}>
           <Container>
             <Heading size={"lg"} marginBottom={5} color="#38A169">
               Tambah Product
@@ -82,19 +83,28 @@ const Create = () => {
             <Form onSubmit={handleSubmit}>
               {values?.payload?.map((value, index) => (
                 <>
-                  <VStack spacing={5}>
-                    <IconButton
-                      isDisabled={values.payload.length === 1}
-                      icon={<DeleteIcon />}
-                      colorScheme="red"
-                      onClick={() => {
-                        let filtered = values.payload.filter((i, itemIndex) => {
-                          return itemIndex !== index;
-                        });
+                  <VStack key={index} shadow={"lg"} p={10} spacing={5}>
+                    <Flex alignItems={"right"}>
+                      <Spacer/>
+                     <Box>
+                     <IconButton
+                        isDisabled={values.payload.length === 1}
+                        icon={<DeleteIcon />}
+                        colorScheme="red"
+                        onClick={() => {
+                          let filtered = values.payload.filter(
+                            (i, itemIndex) => {
+                              return itemIndex !== index;
+                            }
+                          );
 
-                        setFieldValue("payload", filtered);
-                      }}
-                    />
+                          setFieldValue("payload", filtered);
+                        }}
+                      />
+                     </Box>
+                    </Flex>
+
+                    
                     <FormControl isInvalid={errors?.cost}>
                       <FormLabel
                         color="#38A169"

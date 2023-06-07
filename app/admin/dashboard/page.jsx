@@ -28,7 +28,7 @@ import { formatDateInd } from "@/utils/date";
 import useDebounce from "@/hook/useDebounce";
 import useNotification from "@/hook/useNotification";
 import Pagination from "@/components/Pagination";
-import useProductService from "@/services/productService";
+import useProductService from "@/app/admin/dashboard/service";
 import { FiFilter } from "react-icons/fi";
 import Filter from "./module/Filter";
 import useFilter from "@/hook/useFilter";
