@@ -5,15 +5,16 @@ const nextConfig = {
     appDir: true,
   },
 
-  env: {
-    GOOGLE_CLIENT_ID:
-      "138767674693-hngsgfk2crl84cm3ldncqdau0so7ntl5.apps.googleusercontent.com",
-    GOOGLE_CLIENT_SECRET: "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",
-    GOOGLE_API_KEY: "AIzaSyCJM_YcGyxmYKpe9tkfSzwL81Lr-L-ZbCw",
-    NEXTAUTH_SECRET: " eeddddndnfnfnfnfnnfnffn",
-    NEXTAUTH_URL: "http://localhost:3000",
-    BASE_URL: "http://localhost:1215",
-  },
+  // env: {
+  //   NODE_ENV : 'production',
+  //   GOOGLE_CLIENT_ID:
+  //     "138767674693-hngsgfk2crl84cm3ldncqdau0so7ntl5.apps.googleusercontent.com",
+  //   GOOGLE_CLIENT_SECRET: "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",
+  //   GOOGLE_API_KEY: "AIzaSyCJM_YcGyxmYKpe9tkfSzwL81Lr-L-ZbCw",
+  //   NEXTAUTH_SECRET: " eeddddndnfnfnfnfnnfnffn",
+  //   NEXTAUTH_URL: "http://localhost:3000",
+  //   BASE_URL: "http://localhost:1215",
+  // },
   images: {
     domains: ["lh3.googleusercontent.com", "flowbite.com", "localhost"],
   },

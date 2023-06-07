@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Form, Formik, useFormik, FormikProvider } from "formik";
-import useProductService from "@/service/productServices";
+import useProductService from "@/app/admin/product/service/productServices";
 import { HiDocumentAdd} from 'react-icons/hi';
 import { GiCancel} from 'react-icons/gi';
 import * as Yup from "yup";

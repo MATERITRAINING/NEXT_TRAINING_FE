@@ -1,4 +1,4 @@
-import useAxiosAuth from "../hook/useAxiosAuth";
+import useAxiosAuth from "./useAxiosAuth";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/useAuthStore";

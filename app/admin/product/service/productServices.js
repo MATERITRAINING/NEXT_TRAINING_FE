@@ -1,8 +1,8 @@
-import useAxiosAuth from "../hook/useAxiosAuth";
+import useAxiosAuth from "../../../../hook/useAxiosAuth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
-import useNotification from "../hook/useNotification";
+import useNotification from "../../../../hook/useNotification";
 
 const useProductService = () => {
   const axiosAuth = useAxiosAuth();
@@ -16,6 +16,7 @@ const useProductService = () => {
     const [params, setParams] = useState({
       pageSize: 10,
       page: 1,
+      q:"",
       ...defaultPrams,
     });
 

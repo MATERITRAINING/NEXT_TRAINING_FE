@@ -1,17 +1,19 @@
-import client from "./axios";
+import {axiosClient}  from "./axios";
 
 const authService = {
   async login(payload) {
-    return client.post("/login", payload);
+
+    console.log
+    return axiosClient.post("/login", payload);
   },
 
   async permissionById(id) {
-    return client.get(`/permission-by-id/${id}/`);
+    return axiosClient.get(`/permission-by-id/${id}/`);
   },
   
 
   async googleLogin(payload) {
-    return client.post("/google-login", payload);
+    return axiosClient.post("/google-login", payload);
   }
 };
 

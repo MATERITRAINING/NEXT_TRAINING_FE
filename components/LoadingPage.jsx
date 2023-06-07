@@ -2,8 +2,9 @@
 "use client";
 import { Box, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import usePermission from "@/service/usePermission";
+import usePermission from "@/hook/usePermission";
 import useAuthStore from "@/store/useAuthStore";
+
 
 const LoadingPage = ({ children }) => {
   const { data: session, status } = useSession();
@@ -16,10 +17,10 @@ const LoadingPage = ({ children }) => {
   if(status === 'loading') {
     return <Spinner/>
   }
-  console.log('user', user)
-
-  console.log('session', session)
+  
   return <>{children}</>;
 };
 
 export default LoadingPage;
+
+

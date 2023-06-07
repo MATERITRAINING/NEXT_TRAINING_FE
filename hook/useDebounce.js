@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import { useEffect, useState } from 'react';
 
 import { useEffect, useState } from "react";
@@ -29,7 +30,7 @@ import { useEffect, useState } from "react";
 // }
 
 export default function useDebounce({ onSubmit, delay }) {
-  const [keyword, setKeyword] = useState(null);
+  const [keyword, setKeyword] = useState("");
   useEffect(() => {
     const handler = setTimeout(() => {
       if(keyword !== null){
@@ -40,7 +41,7 @@ export default function useDebounce({ onSubmit, delay }) {
     return () => {
       clearTimeout(handler);
     };
-  }, [keyword, delay, onsubmit]);
+  }, [keyword, delay]);
 
   return { keyword, setKeyword };
 }

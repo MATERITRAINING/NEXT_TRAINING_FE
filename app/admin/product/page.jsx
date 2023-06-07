@@ -30,9 +30,9 @@ import {
   InputLeftElement,
   Center,
 } from "@chakra-ui/react";
-import useProductService from "@/service/productServices";
+import useProductService from "@/app/admin/product/service/productServices";
 import ModalForm from "@/components/ModalForm";
-import CreateProductForm from "@/module/admin/product/CreateForm";
+import CreateProductForm from "@/app/admin/product/module/CreateForm";
 import useDebounce from "@/hook/useDebounce";
 import useFilter from "@/hook/useFilter";
 import Pagination from "@/components/Pagination";
@@ -42,7 +42,7 @@ import { AddIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import { FiFilter } from "react-icons/fi";
 import Filter from "@/components/Drawer";
 import DrawerFilter from "@/components/Drawer";
-import FilterArtikel from "@/module/admin/product/FilterArtikel";
+import FilterArtikel from "@/app/admin/product/module/Filter";
 import { formatDate } from "@/utils/date";
 const Konsep = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ const Konsep = () => {
   const drawerFilter = useDisclosure();
   const { queryString, submitFilter, resetFilter } = useFilter({
     onFilter: (filterResult) => {
-      setParams((params) => ({ ...params, page: 1, q: null, ...filterResult  }));
+      setParams((params) => ({ ...params, page: 1, q: "", ...filterResult }));
     },
     onReset: () => {
       setParams((params) => ({ page: 1, pageSize: 10 }));
@@ -238,11 +238,13 @@ const Konsep = () => {
                     <Td>
                       <HStack spacing={3}>
                         <UpdateButton
+                          accessMenu="product crud"
                           onClick={() => {
                             router.push(`${pathname}/${item.id}/update`);
                           }}
                         />
                         <DeleteButton
+                          accessMenu="product crud"
                           onClick={() => {
                             onDeleteSubmit(item.id);
                           }}
@@ -267,6 +269,3 @@ const Konsep = () => {
 };
 
 export default Konsep;
-
-
-

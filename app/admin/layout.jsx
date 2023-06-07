@@ -11,13 +11,17 @@ import { Text, Heading } from "@chakra-ui/react";
 import clsx from "clsx";
 import useAuthLayout from "@/store/ustAuthLayout";
 import { useSession } from "next-auth/react";
+import useAuthStore from "@/store/useAuthStore";
+
 const AdminLayout = ({ children }) => {
   const menu = useAuthLayout((state) => state.menu);
   const minimize = useAuthLayout((state) => state.minimize);
   const setMinimize = useAuthLayout((state) => state.setMinimize);
 
+  const user = useAuthStore((state) => state.user);
+
   const { data: session } = useSession();
- 
+
   const [activeLink, setActiveLink] = useState("");
   const pathname = usePathname();
   useEffect(() => {
@@ -26,23 +30,8 @@ const AdminLayout = ({ children }) => {
     //init flowbite
   }, [pathname]);
 
-  const menus = [
-    {
-      name: "Dashboard",
-      menu: "dashboard",
-      path: "/admin/dashboard",
-    },
-    {
-      name: "Product",
-      menu: "product",
-      path: "/admin/product",
-    },
-    {
-      name: "Berita",
-      menu: "berita",
-      path: "/admin/berita",
-    },
-  ];
+  const menus = user?.permissions?.menus
+
 
   return (
     <Flex h="100%" flexDir={"row"} overflow={"hidden"} w={"100%"}>

@@ -148,6 +148,6 @@ export const data = {
   ],
 };
 
-export default function App() {
+export default function ChartBar() {
   return <Bar options={options} data={data} />;
 }

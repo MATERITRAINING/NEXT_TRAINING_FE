@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import authService from "@/service/authService";
 
-
 export const authOptions = {
   // Configure one or more authentication providers
   secret: process.env.NEXTAUTH_SECRET,
@@ -26,26 +25,22 @@ export const authOptions = {
     {},
   ],
   callbacks: {
-
     async redirect({ url, baseUrl }) {
-
-      
-      return baseUrl + '/auth/login'
+      return baseUrl + "/auth/login";
     },
 
-    async signIn({account, user}){
+    async signIn({ account, user }) {
       if (account?.provider === "google") {
-        try{
+        try {
           await authgoogleLogin({ email: user.email });
 
-          return true
-
-        }catch {
-          return false
+          return true;
+        } catch {
+          return false;
         }
       }
 
-      return true
+      return true;
     },
     async jwt({ token, user, account, trigger, session }) {
       if (account?.provider === "google") {
@@ -65,21 +60,24 @@ export const authOptions = {
         return { ...token, ...session.user };
       }
 
-      return { ...token, ...user };
+console.log('ser', user)
+
+      return {
+        ...token,
+       ...user
+      };
     },
     async session({ session, user, token }) {
-      // console.log("user ini", token);
-      // Send properties to the client, like an access_token from a provider.
-
       session.user = { ...token };
 
+      console.log('ses', session)
       return session;
     },
   },
 
   pages: {
     signIn: "/auth/login",
-    error : "/auth/error"
+    error: "/auth/error",
   },
 };
 export default NextAuth(authOptions);

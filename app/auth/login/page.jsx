@@ -31,7 +31,7 @@ const LoginSchema = Yup.object({
 });
 
 export default function Login() {
-  const { data: session, status } = useSession();
+  const { data: session} = useSession();
   const user = useAuthStore((state) => state.user);
   const [show, setShow] = React.useState(false);
   const router = useRouter();
@@ -56,7 +56,7 @@ export default function Login() {
     if (session?.user.role === "member") {
       router.push("/member");
     }
-  }, [session, status, router]);
+  }, [session,  router]);
 
   const handleGoogleLogin = async (values) => {
     const res = await signIn("google", undefined, {
@@ -65,8 +65,12 @@ export default function Login() {
     console.log("rew", res);
   };
   const onSubmit = async (values) => {
+
+    console.log('ok')
     try {
       const response = await authService.login(values);
+
+      
       const permission = await authService.permissionById(response.data.user.id);
 
       toast({
@@ -84,10 +88,12 @@ export default function Login() {
         picture: response.data.user.picture,
         role: response.data.user.role,
         id: response.data.user.id,
-        permission: JSON.stringify( permission.data),
+        permissions: JSON.stringify( permission.data),
         redirect: true,
       });
     } catch (err) {
+
+      console.log('err', err)
       if (err.response.status === 422) {
         toast({
           title: "Warning",
