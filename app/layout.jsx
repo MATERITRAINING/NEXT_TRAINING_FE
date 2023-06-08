@@ -17,8 +17,9 @@ export default function RootLayout({ children, session }) {
       <head />
       <body>
         <Provider session={session}>
+        <CustomChakra>
           <ReactQuery>
-            <CustomChakra>
+            
               <main>
                 <div
                   style={{
@@ -39,8 +40,9 @@ export default function RootLayout({ children, session }) {
                   </section>
                 </div>
               </main>
-            </CustomChakra>
+            
           </ReactQuery>
+          </CustomChakra>
         </Provider>
       </body>
     </html>

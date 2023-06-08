@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
-  // Configure one or more authentication providers
+  secret: process.env.NEXTAUTH_SECRET, // Configure one or more authentication providers
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID,
@@ -41,10 +41,9 @@ export const authOptions = {
         console.log("session", session);
         return {
           ...token,
-          user : session.user,      
+          user: session.user,
           accessToken: session.user.accessToken,
           refreshToken: session.user.refreshToken,
-          
         };
       }
       return {

@@ -19,13 +19,17 @@ import {
   VStack,
   IconButton,
   Box,
-  
+  GridItem,
 } from "@chakra-ui/react";
+
 import { Form, Formik, useFormik, FormikProvider } from "formik";
 import * as Yup from "yup";
 import InputDate from "@/components/InputDate";
 import CurrencyInput from "@/components/CurenncyInput";
 import { DeleteIcon } from "@chakra-ui/icons";
+import useList from "@/hook/useList";
+
+import useProductService from "../service"; //import
 
 const createProductSchema = Yup.object({
   name: Yup.string().nullable().required("Wajib"),
@@ -42,6 +46,9 @@ let productArraySchema = Yup.object().shape({
 });
 
 const Create = () => {
+  const { listCategory } = useList();
+  const { useCreateProduct } = useProductService(); //define hook create service //step 2
+  const mutate = useCreateProduct(); //step 3
   const initialValues = {
     payload: [
       {
@@ -53,8 +60,14 @@ const Create = () => {
       },
     ],
   };
-  const onSubmit = (value) => {
-    console.log("ok");
+  const onSubmit = async (values, { resetForm, setValues }) => {
+    await mutate.mutate(values, {
+      onSuccess: () => {
+        resetForm();
+        setValues(initialValues)
+
+      },
+    });
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -80,14 +93,15 @@ const Create = () => {
             <Heading size={"lg"} marginBottom={5} color="#38A169">
               Tambah Product
             </Heading>
+
+            {JSON.stringify(values)}
             <Form onSubmit={handleSubmit}>
               {values?.payload?.map((value, index) => (
                 <>
-                  <VStack key={index} shadow={"lg"} p={10} spacing={5}>
-                    <Flex alignItems={"right"}>
-                      <Spacer/>
-                     <Box>
-                     <IconButton
+                  <Flex alignItems={"right"}>
+                    <Spacer />
+                    <Box>
+                      <IconButton
                         isDisabled={values.payload.length === 1}
                         icon={<DeleteIcon />}
                         colorScheme="red"
@@ -101,116 +115,138 @@ const Create = () => {
                           setFieldValue("payload", filtered);
                         }}
                       />
-                     </Box>
-                    </Flex>
+                    </Box>
+                  </Flex>
 
-                    
-                    <FormControl isInvalid={errors?.cost}>
+                  <VStack key={index} shadow={"lg"} p={10} spacing={5}>
+                    <FormControl isInvalid={errors?.payload?.[index]?.cost}>
                       <FormLabel
                         color="#38A169"
-                        htmlFor="cost"
+                        htmlFor={`payload[${index}]cost`}
                         fontWeight="semibold"
                       >
-                        Nama Product
+                        Harga Product
                       </FormLabel>
                       <CurrencyInput
                         id="cost"
-                        isInvalid={errors.cost}
-                        value={values.cost}
+                        name={`payload[${index}]cost`}
+                        isInvalid={errors?.payload?.[index]?.cost}
+                        value={value.cost}
                         onChange={(e) => {
-                          setFieldValue(`cost`, Number(e.value) || null);
+                          setFieldValue(
+                            `payload[${index}]cost`,
+                            Number(e.value) || null
+                          );
                         }}
-                        onBlur={() => formik.setFieldTouched("cost")}
+                        onBlur={() =>
+                          formik.setFieldTouched(`payload[${index}]cost`)
+                        }
                       />
                       <FormErrorMessage fontWeight="bold">
-                        {errors?.cost}
+                        {errors?.payload?.[index]?.cost}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors?.openDate}>
+                    <FormControl isInvalid={errors?.payload?.[index]?.openDate}>
                       <FormLabel
                         color="#38A169"
-                        htmlFor="openDate"
+                        htmlFor={`payload[${index}]openDate`}
                         fontWeight="semibold"
                       >
                         Tanggal
                       </FormLabel>
                       <InputDate
-                        value={
-                          values.openDate ? new Date(values.openDate) : null
-                        }
-                        name="openDate"
+                        value={value.openDate ? new Date(value.openDate) : null}
+                        name={`payload[${index}]openDate`}
                         onBlur={handleBlur}
-                        onChange={(e) => setFieldValue("openDate", e)}
-                        isInvalid={errors.openDate}
+                        onChange={(e) => {
+                          setFieldValue(`payload[${index}]openDate`, e);
+                        }}
+                        isInvalid={errors?.payload?.[index]?.openDate}
                       />
                       <FormErrorMessage fontWeight="bold">
-                        {errors?.openDate}
+                        {errors?.payload?.[index]?.openDate}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors?.name}>
+                    <FormControl isInvalid={errors?.payload?.[index]?.name}>
                       <FormLabel
                         color="#38A169"
-                        htmlFor="name"
+                        htmlFor={`payload[${index}]name`}
                         fontWeight="semibold"
                       >
                         Nama Product
                       </FormLabel>
                       <Input
-                        id="name"
+                        id={`payload[${index}]name`}
+                        name={`payload[${index}]name`}
                         type="text"
-                        value={values.name}
-                        onChange={handleChange}
+                        value={value.name}
+                        onChange={(e) => {
+                          setFieldValue(
+                            `payload[${index}]name`,
+                            e.target.value
+                          );
+                        }}
+                        onBlur={handleBlur}
                         placeholder="Ketikname"
                       />
 
                       <FormErrorMessage fontWeight="bold">
-                        {errors?.name}
+                        {errors?.payload?.[index]?.name}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors?.category}>
+                    <FormControl isInvalid={errors?.payload?.[index]?.category}>
                       <FormLabel
                         color="#38A169"
-                        htmlFor="category"
+                        htmlFor={`payload[${index}]category`}
                         fontWeight="semibold"
                       >
                         Kategori
                       </FormLabel>
                       <Select
-                        id="category"
+                        id={`payload[${index}]category`}
+                        name={`payload[${index}]category`}
                         type="text"
-                        value={values.category}
+                        value={value.category}
                         onChange={handleChange}
                         placeholder="Pilih"
                       >
-                        <option value={"handphone"}>Handphone</option>
-                        <option value={"tv"}>TV</option>
-                        <option value={"motor"}>Motor</option>
+                        {listCategory &&
+                          listCategory?.data?.map((item, index) => {
+                            return (
+                              <option key={index} value={item.first_name}>
+                                {item.first_name}
+                              </option>
+                            );
+                          })}
                       </Select>
 
                       <FormErrorMessage fontWeight="bold">
-                        {errors?.category}
+                        {errors?.payload?.[index]?.category}
                       </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={errors?.description}>
+                    <FormControl
+                      isInvalid={errors?.payload?.[index]?.description}
+                    >
                       <FormLabel
                         color="#38A169"
-                        htmlFor="description"
+                        htmlFor={`payload[${index}]description`}
                         fontWeight="semibold"
                       >
                         Deskripsi
                       </FormLabel>
                       <InputGroup>
                         <Textarea
-                          id="description"
+                          id={`payload[${index}]description`}
+                          name={`payload[${index}]description`}
                           type="text"
-                          value={values.description}
+                          value={value.description}
                           onChange={handleChange}
                           placeholder="Ketikname"
                         />
                       </InputGroup>
 
                       <FormErrorMessage fontWeight="bold">
-                        {errors?.description}
+                        {errors?.payload?.[index]?.description}
                       </FormErrorMessage>
                     </FormControl>
                   </VStack>
@@ -238,7 +274,13 @@ const Create = () => {
                 <Button type="button" width={"100%"} colorScheme="red">
                   Tutup
                 </Button>
-                <Button type="submit" width={"100%"} colorScheme="green">
+                <Button
+                  isDisabled={mutate.isLoading}
+                  isLoading={mutate.isLoading}
+                  type="submit"
+                  width={"100%"}
+                  colorScheme="green"
+                >
                   Create
                 </Button>
               </Flex>

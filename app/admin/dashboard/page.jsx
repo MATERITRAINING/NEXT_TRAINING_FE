@@ -4,7 +4,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -18,11 +17,11 @@ import {
   Spinner,
   useDisclosure,
   Button,
+  Checkbox,
+  HStack,
 } from "@chakra-ui/react";
 import DrawerFilter from "@/components/DrawerFilter";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosAuth from "@/hook/useAuthAxios";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { formatDateInd } from "@/utils/date";
 import useDebounce from "@/hook/useDebounce";
@@ -32,11 +31,15 @@ import useProductService from "@/app/admin/dashboard/service";
 import { FiFilter } from "react-icons/fi";
 import Filter from "./module/Filter";
 import useFilter from "@/hook/useFilter";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import useChecked from "@/hook/useChecked";
+import useConfirmSubmit from "@/hook/useConfirmSubmit";
 import Link from "next/link";
+import { usePathname } from "next/navigation"; //1
+import { DeleteButton, UpdateButton } from "@/components/ActionButton";
 
 function PAge() {
-  const axiosClient = useAxiosAuth();
+  const pathname = usePathname() //2
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { useListProduct } = useProductService();
   const { data, isFetching, isLoading, setParams, params } = useListProduct();
@@ -58,6 +61,24 @@ function PAge() {
         pageSize: 10,
         q: "",
       }));
+    },
+  });
+
+  const {
+    payload,
+    setPayload,
+    isAllChecked,
+    isIndeterminate,
+    checkedAllHandle,
+    checkedItemHandle,
+  } = useChecked(data?.data);
+
+  const handleDelete = useConfirmSubmit({
+    onSubmit: (payload) => {
+      //disini mutate ketika delete /post /put
+    },
+    options: {
+      title: "Yakin?",
     },
   });
 
@@ -88,11 +109,21 @@ function PAge() {
         />
       </DrawerFilter>
 
-      {JSON.stringify(params)}
+      {JSON.stringify(pathname)}
       <Flex minWidth={"max-content"} alignItems={"center"} gap={2}>
         <Box p={2}>
           <Button colorScheme="teal" onClick={onOpen} leftIcon={<FiFilter />}>
             Filter
+          </Button>
+        </Box>
+        <Box>
+          <Button
+            onClick={() => handleDelete(payload)}
+            isDisabled={payload.length === 0}
+            colorScheme="red"
+            leftIcon={<DeleteIcon />}
+          >
+            Hapus
           </Button>
         </Box>
 
@@ -115,10 +146,18 @@ function PAge() {
       {isFetching && <p>Fetching</p>}
       {isLoading && <p>Loading</p>}
       <TableContainer>
+        {JSON.stringify(payload)}
         <Table variant="striped" colorScheme="teal">
           {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
           <Thead>
             <Tr>
+              <Th>
+                <Checkbox
+                  isIndeterminate={isIndeterminate}
+                  isChecked={isAllChecked}
+                  onChange={checkedAllHandle}
+                />
+              </Th>
               <Th>No</Th>
               <Th>Image</Th>
               <Th>Nama</Th>
@@ -132,13 +171,28 @@ function PAge() {
             {data &&
               data.data.map((item, index) => (
                 <Tr key={index}>
+                  <Td>
+                    <Checkbox
+                      isChecked={payload.includes(item.id)}
+                      onChange={() => checkedItemHandle(item.id)}
+                    />
+                  </Td>
                   <Td>{(params.page - 1) * params.pageSize + index + 1}</Td>
                   <Td>Image</Td>
                   <Td>{item.name || "-"}</Td>
                   <Td>{item.category || "-"}</Td>
                   <Td>{formatDateInd(item.openDate)}</Td>
                   <Td>{item.cost || "-"}</Td>
-                  <Td>Aksi</Td>
+                  <Td>
+                    <HStack spacing={5}>
+                      <DeleteButton />
+                      <Link href={`${pathname}/${item.id}/update`}>
+                        <UpdateButton />
+
+                        
+                      </Link>
+                    </HStack>
+                  </Td>
                 </Tr>
               ))}
           </Tbody>
