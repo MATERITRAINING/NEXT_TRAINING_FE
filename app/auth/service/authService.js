@@ -1,4 +1,4 @@
-import {axiosClient}  from "./axios";
+import {axiosClient}  from "../../../service/axios";
 
 const authService = {
   async login(payload) {
@@ -7,8 +7,8 @@ const authService = {
     return axiosClient.post("/login", payload);
   },
 
-  async permissionById(id) {
-    return axiosClient.get(`/permission-by-id/${id}/`);
+  async permission(id) {
+    return axiosClient.get(`/permission/${id}/`);
   },
   
 

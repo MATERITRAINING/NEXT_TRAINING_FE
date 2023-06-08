@@ -22,7 +22,7 @@ import {
   Heading,
   Grid,
 } from "@chakra-ui/react";
-import authService from "@/service/authService";
+import authService from "@/app/auth/service/authService";
 import LoadingPage from "@/components/LoadingPage";
 
 const LoginSchema = Yup.object({
@@ -49,14 +49,14 @@ export default function Login() {
     position: "top-right",
   });
 
-  useEffect(() => {
-    if (session?.user.role === "admin") {
-      router.push("/admin");
-    }
-    if (session?.user.role === "member") {
-      router.push("/member");
-    }
-  }, [session,  router]);
+  // useEffect(() => {
+  //   if (session?.user.role === "admin") {
+  //     router.push("/admin");
+  //   }
+  //   if (session?.user.role === "member") {
+  //     router.push("/member");
+  //   }
+  // }, [session,  router]);
 
   const handleGoogleLogin = async (values) => {
     const res = await signIn("google", undefined, {
@@ -71,7 +71,11 @@ export default function Login() {
       const response = await authService.login(values);
 
       
-      const permission = await authService.permissionById(response.data.user.id);
+      const permission = await authService.permission(response.data.user.id, {
+        headers : {
+          Authorization : `Bearer ${response?.data?.accessToken}`
+        }
+      });
 
       toast({
         title: "Success",
@@ -80,17 +84,17 @@ export default function Login() {
         isClosable: true,
       });
 
-      await signIn("credentials", {
-        email: response.data.user.email,
-        accessToken: response.data.accessToken,
-        refreshToken: response.data.refreshToken,
-        name: response.data.user.name,
-        picture: response.data.user.picture,
-        role: response.data.user.role,
-        id: response.data.user.id,
-        permissions: JSON.stringify( permission.data),
-        redirect: true,
-      });
+      // await signIn("credentials", {
+      //   email: response.data.user.email,
+      //   accessToken: response.data.accessToken,
+      //   refreshToken: response.data.refreshToken,
+      //   name: response.data.user.name,
+      //   picture: response.data.user.picture,
+      //   role: response.data.user.role,
+      //   id: response.data.user.id,
+      //   permissions: JSON.stringify( permission.data),
+      //   redirect: true,
+      // });
     } catch (err) {
 
       console.log('err', err)
