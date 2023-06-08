@@ -33,8 +33,6 @@ export default function useProductService() {
     return mutate;
   };
 
-
-
   const useDeleteProduct = () => {
     const mutate = useMutation(
       (payload) => {
@@ -83,5 +81,20 @@ export default function useProductService() {
     return { data, isFetching, isLoading, params, setParams };
   };
 
-  return { useListProduct, useCreateProduct };
+  const useDetailProduct = (id) => {
+    const { data, isLoading, isFetching } = useQuery(
+      ["/product/detail", {id}],
+      () =>
+        axiosClient.get(`/product/${id}/detail`),
+      {
+        select: (response) => response.data,
+
+        enabled: session?.user?.accessToken !== undefined && id !== undefined,
+      }
+    );
+
+    return { data, isFetching, isLoading };
+  };
+
+  return { useListProduct, useCreateProduct, useDetailProduct };
 }
