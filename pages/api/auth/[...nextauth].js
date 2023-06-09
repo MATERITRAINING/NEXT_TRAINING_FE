@@ -60,7 +60,7 @@ export const authOptions = {
         return { ...token, ...session.user };
       }
 
-console.log('ser', user)
+
 
       return {
         ...token,

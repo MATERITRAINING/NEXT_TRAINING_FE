@@ -2,8 +2,9 @@
 import React from "react";
 import { Form, Formik, useFormik, FormikProvider } from "formik";
 import useProductService from "@/app/admin/product/service/productServices";
-import { HiDocumentAdd} from 'react-icons/hi';
-import { GiCancel} from 'react-icons/gi';
+import { HiDocumentAdd } from "react-icons/hi";
+import { GiCancel } from "react-icons/gi";
+import { productValidation, productInitialValue } from "../initialvalues";
 import * as Yup from "yup";
 import {
   FormControl,
@@ -27,11 +28,7 @@ import InputDate from "@/components/InputDate";
 import { FcAddImage } from "react-icons/fc";
 
 const CreateProductSchema = Yup.object({
-  name: Yup.string().nullable().required("Wajib"),
-  cost: Yup.number().required("Wajib"),
-  description: Yup.string().required("Wajib"),
-  category: Yup.string().required("Wajib Pilih"),
-  openDate: Yup.string().required("Wajib Pilih"),
+  ...productValidation,
 });
 
 const CreateProductForm = ({ onClose }) => {
@@ -46,15 +43,11 @@ const CreateProductForm = ({ onClose }) => {
         onClose();
       },
     });
-    console.log(createProduct.isSuccess);
+   
   };
 
   const initialValues = {
-    name: "",
-    description: "",
-    openDate: "",
-    cost: "",
-    category: "",
+    ...productInitialValue,
   };
 
   const formik = useFormik({
@@ -78,7 +71,6 @@ const CreateProductForm = ({ onClose }) => {
   return (
     <FormikProvider value={values}>
       <Flex align={"center"} justify={"center"}>
-        
         <Container>
           <Heading size={"lg"} marginBottom={5} color="#38A169">
             Tambah Product
@@ -114,7 +106,7 @@ const CreateProductForm = ({ onClose }) => {
                   value={values.openDate ? new Date(values.openDate) : null}
                   name="openDate"
                   onBlur={handleBlur}
-                  onChange={(e) => setFieldValue("openDate",e)}
+                  onChange={(e) => setFieldValue("openDate", e)}
                   isInvalid={errors.openDate}
                 />
                 <FormErrorMessage fontWeight="bold">
@@ -138,7 +130,11 @@ const CreateProductForm = ({ onClose }) => {
                 </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors?.category}>
-                <FormLabel color="#38A169" htmlFor="category" fontWeight="semibold">
+                <FormLabel
+                  color="#38A169"
+                  htmlFor="category"
+                  fontWeight="semibold"
+                >
                   Kategori
                 </FormLabel>
                 <Select
@@ -148,9 +144,9 @@ const CreateProductForm = ({ onClose }) => {
                   onChange={handleChange}
                   placeholder="Pilih"
                 >
-                  <option value={'handphone'}>Handphone</option>
-                  <option value={'tv'}>TV</option>
-                  <option value={'motor'}>Motor</option>
+                  <option value={"handphone"}>Handphone</option>
+                  <option value={"tv"}>TV</option>
+                  <option value={"motor"}>Motor</option>
                 </Select>
 
                 <FormErrorMessage fontWeight="bold">
@@ -180,29 +176,26 @@ const CreateProductForm = ({ onClose }) => {
                 </FormErrorMessage>
               </FormControl>
 
-             <Flex gap={5} w={'100%'}>
-            
-              
-              <Button
-                onClick={onClose}
-                type="button"
-                width={"100%"}
-                colorScheme="red"
-                leftIcon={<GiCancel/>}
-               
-              >
-                Tutup
-              </Button>
-              <Button
-                isDisabled={isLoading}
-                type="submit"
-                width={"100%"}
-                colorScheme="green"
-                leftIcon={<HiDocumentAdd/>}
-              >
-                {isLoading ? <Spinner /> : "Create"}
-              </Button>
-             </Flex>
+              <Flex gap={5} w={"100%"}>
+                <Button
+                  onClick={onClose}
+                  type="button"
+                  width={"100%"}
+                  colorScheme="red"
+                  leftIcon={<GiCancel />}
+                >
+                  Tutup
+                </Button>
+                <Button
+                  isDisabled={isLoading}
+                  type="submit"
+                  width={"100%"}
+                  colorScheme="green"
+                  leftIcon={<HiDocumentAdd />}
+                >
+                  {isLoading ? <Spinner /> : "Create"}
+                </Button>
+              </Flex>
             </VStack>
           </Form>
         </Container>

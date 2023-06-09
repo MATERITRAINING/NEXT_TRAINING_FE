@@ -61,7 +61,7 @@ const useProductService = () => {
         }),
       {
         onSuccess: (res) => {
-          console.log("res", res.data.msg);
+       
           toastSuccess(res.data.msg);
 
           queryClient.invalidateQueries({ queryKey: ["/product/list"] });

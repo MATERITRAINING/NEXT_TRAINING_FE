@@ -7,18 +7,6 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { Card2 } from "@/components/Card";
 import UserReqres from "@/module/app-ssr/UserReqres";
 
-// async function getKelas(params) {
-//   const res = await axios(`/artikel/list`, {
-//     headers: {
-//       Authorization: `Bearer ${params}`,
-//     },
-//   });
-//   console.log("res", res.data);
-
-//   // await new Promise((r) => setTimeout(r, 5000));
-//   return res.data;
-// }
-
 async function getUser(id) {
   const res = await axios(`https://reqres.in/api/users?page=${id}`);
 

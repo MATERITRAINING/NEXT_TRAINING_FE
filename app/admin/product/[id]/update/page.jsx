@@ -6,7 +6,7 @@ import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
 import { HiDocumentAdd } from "react-icons/hi";
 import { GiCancel } from "react-icons/gi";
-import * as Yup from "yup";
+import { productInitialValue, productValidation } from "../../initialvalues";
 import {
   FormControl,
   Input,
@@ -23,20 +23,14 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useRouter, usePathname } from "next/navigation";
-
+import * as Yup from "yup";
 import { useUploadSingle } from "@/service";
 import DropzoneUpload from "@/components/UploadFileSingle";
 import CurrencyInput from "@/components/CurenncyInput";
 import InputDate from "@/components/InputDate";
 import ProtectedPage from "@/components/ProtectedPage";
 const CreateProductSchema = Yup.object({
-  name: Yup.string().nullable().required("Wajib"),
-  openDate: Yup.string()
-    // .max(10, "format tanggal tidak sesuai")
-    .nullable()
-    .required("Wajib"),
-  description: Yup.string().min(8, "Minimal wajib 8 angka").required("Wajib"),
-  cost: Yup.number().required("Wajib Pilih"),
+  ...productValidation,
 });
 
 const UpdateProductForm = ({ params }) => {

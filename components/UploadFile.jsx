@@ -1,23 +1,18 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const DropzoneUpload = ({ onSelected }) => {
+const DropzoneUpload = ({ onSelected}) => {
   const onDrop = useCallback(async (acceptedFiles) => {
     const preview = await acceptedFiles.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
       })
     );
-
     onSelected({
-      preview: preview[0].preview,
       file: acceptedFiles[0],
+      
     });
 
-    // setFieldValue("thumbnail", preview[0].preview);
-    // setFieldValue("file", acceptedFiles[0]);
-
-    console.log("pre", preview);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -30,6 +25,7 @@ const DropzoneUpload = ({ onSelected }) => {
         className: "dropzone flex items-center justify-center w-full mt-5 ",
       })}
     >
+      {}
       <label
         htmlFor="dropzone-file"
         className="flex flex-col items-center justify-center w-full  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"

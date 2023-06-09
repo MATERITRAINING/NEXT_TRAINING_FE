@@ -4,7 +4,7 @@ export default async function Home() {
   // const session = await getServerSession(authOptions);
   // const dataKelas = await getKelas(session?.user?.token);
 
-  // console.log("data", dataKelas);
+ 
 
   return (
     <section className="w-full flex-center flex-col">
