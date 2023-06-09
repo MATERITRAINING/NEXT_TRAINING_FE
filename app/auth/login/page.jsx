@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { Box, Center, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
-import { login } from "@/services/authService";
+import { login, getPermission } from "@/services/authService";
 import { FcGoogle } from "react-icons/fc";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -38,7 +38,7 @@ export default function Login() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  console.log("session", session);
+  console.log("session", session?.user?.permissions);
   console.log("status", status);
   const [show, setShow] = React.useState(false);
   const initialValues = {
@@ -51,9 +51,9 @@ export default function Login() {
       console.log("values", values);
 
       const response = await login(values);
+      const permission = await getPermission(response.data.accessToken);
       console.log("response", response.data);
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
+
       toast({
         title: "Success",
         description: response.data.msg,
@@ -65,6 +65,7 @@ export default function Login() {
 
       await signIn("credentials", {
         users: JSON.stringify(response.data.user),
+        permissions: JSON.stringify(permission.data.permissions),
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
         redirect: false,
@@ -120,10 +121,12 @@ export default function Login() {
 
   useEffect(() => {
     if (session) {
-      if (session.user.users.role === "admin") {
+
+      console.log('ses', session.user)
+      if (session?.user?.permissions?.role?.includes("admin")) {
         router.push("/admin");
       } else {
-        router.push("/member");
+        router.push("/notAccess");
       }
     }
   }, [session, router]);

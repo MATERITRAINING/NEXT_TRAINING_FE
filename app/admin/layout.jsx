@@ -8,11 +8,12 @@ import { usePathname } from "next/navigation";
 import { HiBookOpen } from "react-icons/hi2";
 import { Text, Heading } from "@chakra-ui/react";
 import clsx from "clsx";
-
+import useLayoutStore from "@/store/useLayoutStore";
+import useAuthStore from "@/store/useAuthStore";
 function AdminLayout({ children }) {
-  const menu = false;
+  const menu = useLayoutStore((state) => state.menu);
   const [minimize, setMinimize] = useState(false);
-
+  const user = useAuthStore((state) => state.user)
   const [activeLink, setActiveLink] = useState("");
   const pathname = usePathname();
   useEffect(() => {
@@ -21,31 +22,9 @@ function AdminLayout({ children }) {
     //init flowbite
   }, [pathname]);
 
-  const menus = [
-    {
-      name: "Dashboard",
-      menu: "dashboard",
-      path: "/admin/dashboard",
-    },
-    {
-      name: "Product",
-      menu: "product",
-      path: "/admin/product",
-    },
-    {
-      name: "Berita",
-      menu: "berita",
-      path: "/admin/berita",
-    },
-  ];
+  const menus = user?.permissions?.menus
   return (
-    <Flex
-      h="100%"
-      flexDir={"row"}
-      overflow={"hidden"}
-      w={"100%"}
-     
-    >
+    <Flex h="100%" flexDir={"row"} overflow={"hidden"} w={"100%"}>
       <Flex
         transform={{
           base: menu ? "translate(0, 0)" : "translate(-100%, 0)",
@@ -115,7 +94,6 @@ function AdminLayout({ children }) {
         </Flex>
       </Flex>
       <Flex
-       
         overflow={"scroll"}
         w={{
           base: "100%",

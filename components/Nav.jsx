@@ -8,10 +8,11 @@ import { useRouter } from "next/navigation";
 import { FiMenu } from "react-icons/fi";
 import { TfiClose } from "react-icons/tfi";
 import { Avatar, Box, Flex, VStack } from "@chakra-ui/react";
-
+import useLayoutStore from "@/store/useLayoutStore";
 const Nav = () => {
   const router = useRouter();
-
+  const setMenu = useLayoutStore((state) => state.setMenu);
+  const menu = useLayoutStore((state) => state.menu);
   const { data: session } = useSession();
 
   const [providers, setProviders] = useState(null);
@@ -26,6 +27,9 @@ const Nav = () => {
             BPKP Training
           </h1>
         </Link>
+        <button onClick={setMenu} className="text-red-400">
+          {menu ? <span>X</span> : <span>Y</span>}
+        </button>
       </section>
 
       <Flex align={"center"} flexDir={"row"} spacing="10">

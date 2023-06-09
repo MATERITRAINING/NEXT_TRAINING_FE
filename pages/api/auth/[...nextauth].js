@@ -15,7 +15,7 @@ export const authOptions = {
 
       credentials: {},
       async authorize(credentials, req) {
-        console.log("credentials", credentials);
+       
 
         return {
           ...credentials,
@@ -32,18 +32,26 @@ export const authOptions = {
       return baseUrl;
     },
     async session({ session, user, token }) {
-      session.user = { ...token, users: JSON.parse(token.users) };
+
+     
+      session.user = {
+        ...token,
+        users: JSON.parse(token.users),
+        permissions: JSON.parse(token.permissions),
+      };
 
       return session;
     },
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
-        console.log("session", session);
+       
+        console.log('ses', session.user.permissions)
         return {
           ...token,
           user: session.user,
           accessToken: session.user.accessToken,
           refreshToken: session.user.refreshToken,
+          permissions : JSON.stringify(session.user.permissions),
         };
       }
       return {

@@ -83,9 +83,8 @@ export default function useProductService() {
 
   const useDetailProduct = (id) => {
     const { data, isLoading, isFetching } = useQuery(
-      ["/product/detail", {id}],
-      () =>
-        axiosClient.get(`/product/${id}/detail`),
+      ["/product/detail", { id }],
+      () => axiosClient.get(`/product/${id}/detail`),
       {
         select: (response) => response.data,
 
@@ -96,5 +95,38 @@ export default function useProductService() {
     return { data, isFetching, isLoading };
   };
 
-  return { useListProduct, useCreateProduct, useDetailProduct };
+  const useUpdateProduct = (id) => {
+    const mutate = useMutation(
+      (payload) => {
+        return axiosClient.put(`/product/${id}/update`, payload);
+      },
+      {
+        onSuccess: (response) => {
+
+          console.log('jalan', response)
+          toastSuccess(response.data.msg);
+          queryClient.invalidateQueries("/product/list");
+        },
+        onError: (error) => {
+
+          console.log('er',error)
+          if (error.response.status == 422) {
+            toastWarning(error.response.data.msg);
+          } else {
+            toastDanger();
+          }
+        },
+        onSettled: (respose) => {},
+      }
+    );
+
+    return mutate;
+  };
+
+  return {
+    useListProduct,
+    useCreateProduct,
+    useDetailProduct,
+    useUpdateProduct,
+  };
 }

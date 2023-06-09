@@ -5,6 +5,7 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import "./globals.css";
 import ReactQuery from "@/components/ReactQuery";
 import Nav from "@/components/Nav";
+import LodingPage from "@/components/LodingPage";
 
 export const metadata = {
   title: "Training BPKP",
@@ -17,9 +18,8 @@ export default function RootLayout({ children, session }) {
       <head />
       <body>
         <Provider session={session}>
-        <CustomChakra>
-          <ReactQuery>
-            
+          <CustomChakra>
+            <ReactQuery>
               <main>
                 <div
                   style={{
@@ -27,21 +27,22 @@ export default function RootLayout({ children, session }) {
                   }}
                   className=" h-screen w-screen overflow-visible antialiased text-gray-700 border "
                 >
-                  <section className="h-[10%] w-full">
-                    <Nav />
-                  </section>
-                  <section
-                    style={{
-                      overflow: "hidden",
-                    }}
-                    className="h-[90%] w-full "
-                  >
-                    {children}
-                  </section>
+                  <LodingPage>
+                    <section className="h-[10%] w-full">
+                      <Nav />
+                    </section>
+                    <section
+                      style={{
+                        overflow: "hidden",
+                      }}
+                      className="h-[90%] w-full "
+                    >
+                      {children}
+                    </section>
+                  </LodingPage>
                 </div>
               </main>
-            
-          </ReactQuery>
+            </ReactQuery>
           </CustomChakra>
         </Provider>
       </body>

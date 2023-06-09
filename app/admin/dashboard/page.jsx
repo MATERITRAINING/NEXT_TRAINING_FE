@@ -39,7 +39,7 @@ import { usePathname } from "next/navigation"; //1
 import { DeleteButton, UpdateButton } from "@/components/ActionButton";
 
 function PAge() {
-  const pathname = usePathname() //2
+  const pathname = usePathname(); //2
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { useListProduct } = useProductService();
   const { data, isFetching, isLoading, setParams, params } = useListProduct();
@@ -64,6 +64,7 @@ function PAge() {
     },
   });
 
+  console.log("ses", session?.data?.permissions);
   const {
     payload,
     setPayload,
@@ -109,7 +110,7 @@ function PAge() {
         />
       </DrawerFilter>
 
-      {JSON.stringify(pathname)}
+      {JSON.stringify(session?.user.permissions)}
       <Flex minWidth={"max-content"} alignItems={"center"} gap={2}>
         <Box p={2}>
           <Button colorScheme="teal" onClick={onOpen} leftIcon={<FiFilter />}>
@@ -146,7 +147,6 @@ function PAge() {
       {isFetching && <p>Fetching</p>}
       {isLoading && <p>Loading</p>}
       <TableContainer>
-        {JSON.stringify(payload)}
         <Table variant="striped" colorScheme="teal">
           {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
           <Thead>
@@ -178,18 +178,16 @@ function PAge() {
                     />
                   </Td>
                   <Td>{(params.page - 1) * params.pageSize + index + 1}</Td>
-                  <Td>Image</Td>
+                  <Td></Td>
                   <Td>{item.name || "-"}</Td>
                   <Td>{item.category || "-"}</Td>
                   <Td>{formatDateInd(item.openDate)}</Td>
                   <Td>{item.cost || "-"}</Td>
                   <Td>
                     <HStack spacing={5}>
-                      <DeleteButton />
+                      <DeleteButton accessMenu="product crud" />
                       <Link href={`${pathname}/${item.id}/update`}>
                         <UpdateButton />
-
-                        
                       </Link>
                     </HStack>
                   </Td>
