@@ -8,7 +8,7 @@ const nextConfig = {
   env: {
     
     GOOGLE_CLIENT_ID:
-      "138767674693-hngsgfk2crl84cm3ldncqdau0so7ntl5.apps.googleusercontent.com",
+      "",
     GOOGLE_CLIENT_SECRET: "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",
     GOOGLE_API_KEY: "AIzaSyCJM_YcGyxmYKpe9tkfSzwL81Lr-L-ZbCw",
     NEXTAUTH_SECRET: " eeddddndnfnfnfnfnnfnffn",
