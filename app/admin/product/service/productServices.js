@@ -16,7 +16,9 @@ const useProductService = () => {
     const [params, setParams] = useState({
       pageSize: 10,
       page: 1,
-      q:"",
+      q: "",
+      orderBy: "id",
+      sortBy: "desc",
       ...defaultPrams,
     });
 
@@ -61,7 +63,6 @@ const useProductService = () => {
         }),
       {
         onSuccess: (res) => {
-       
           toastSuccess(res.data.msg);
 
           queryClient.invalidateQueries({ queryKey: ["/product/list"] });
@@ -149,7 +150,7 @@ const useProductService = () => {
     useDeleteBulkProduct,
     useDetailProduct,
     useUpdateProduct,
-    useDeleteProduct
+    useDeleteProduct,
   };
 };
 

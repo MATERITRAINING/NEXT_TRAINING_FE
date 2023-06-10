@@ -9,7 +9,6 @@ import {
   Tbody,
   Tfoot,
   Tr,
-  Th,
   Td,
   TableCaption,
   TableContainer,
@@ -30,6 +29,7 @@ import {
   InputLeftElement,
   Center,
 } from "@chakra-ui/react";
+import { Th } from "@/components/Tabel";
 import useProductService from "@/app/admin/product/service/productServices";
 import ModalForm from "@/components/ModalForm";
 import CreateProductForm from "@/app/admin/product/module/CreateForm";
@@ -44,9 +44,11 @@ import Filter from "@/components/Drawer";
 import DrawerFilter from "@/components/Drawer";
 import FilterArtikel from "@/app/admin/product/module/Filter";
 import { formatDate } from "@/utils/date";
+import useSort from "@/hook/useSort";
 const Konsep = () => {
   const router = useRouter();
   const pathname = usePathname();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { useListProduct, useDeleteBulkProduct, useDeleteProduct } =
     useProductService();
@@ -55,6 +57,7 @@ const Konsep = () => {
     useDeleteProduct();
   const { data, isLoading, params, setParams, isFetching } = useListProduct();
   const drawerFilter = useDisclosure();
+  const { sort, toggleSort } = useSort();
   const { queryString, submitFilter, resetFilter } = useFilter({
     onFilter: (filterResult) => {
       setParams((params) => ({ ...params, page: 1, q: "", ...filterResult }));
@@ -71,6 +74,8 @@ const Konsep = () => {
         pageSize: params.pageSize,
         page: 1,
         q: q,
+        orderBy: "id",
+        sortBy: "desc",
       }));
     },
   });
@@ -108,7 +113,6 @@ const Konsep = () => {
 
   return (
     <div className="h-full w-full p-5 ">
-      {JSON.stringify(params)}
       <DrawerFilter
         title="Filter Artikel"
         isOpen={drawerFilter.isOpen}
@@ -125,6 +129,8 @@ const Konsep = () => {
       <ModalForm isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
         <CreateProductForm onClose={onClose} />
       </ModalForm>
+
+      {JSON.stringify(params)}
       <Flex minWidth="max-content" alignItems="center" gap="2">
         <Box p="2">
           <InputGroup>
@@ -182,24 +188,55 @@ const Konsep = () => {
                     onChange={checkedAllHandle}
                   />
                 </Th>
-                <Th sx={{ padding: "100x" }}>No</Th>
+                <Th
+                  sort={sort}
+                  onToggleSort={() => toggleSort("id", setParams)}
+                  columnKey="id"
+                  sx={{ padding: "100x" }}
+                >
+                  No
+                </Th>
                 <Th>Image</Th>
-                <Th>Nama</Th>
-                <Th>Kategori</Th>
-                <Th>description</Th>
-                <Th>di buka jam</Th>
+                <Th
+                  sort={sort}
+                  onToggleSort={() => toggleSort("name", setParams)}
+                  columnKey="name"
+                >
+                  Nama
+                </Th>
+                <Th
+                  sort={sort}
+                  onToggleSort={() => toggleSort("category", setParams)}
+                  columnKey="category"
+                >
+                  Kategori
+                </Th>
+                <Th
+                  sort={sort}
+                  onToggleSort={() => toggleSort("description", setParams)}
+                  columnKey="description"
+                >
+                  description
+                </Th>
+                <Th
+                  sort={sort}
+                  onToggleSort={() => toggleSort("openDate", setParams)}
+                  columnKey="openDate"
+                >
+                  di buka jam
+                </Th>
                 <Th>Aksi</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {!isFetching && data.data.length === 0 && (
+              {!isLoading && data.data.length === 0 && (
                 <Tr>
                   <Td colSpan={10}>
                     <Center>Data Tidak Ditemukan</Center>
                   </Td>
                 </Tr>
               )}
-              {isFetching && (
+              {isLoading && (
                 <Tr>
                   <Td colSpan={10}>
                     <Center>
@@ -208,7 +245,7 @@ const Konsep = () => {
                   </Td>
                 </Tr>
               )}
-              {!isFetching &&
+              {!isLoading &&
                 data &&
                 data.data.map((item, index) => (
                   <Tr key={index}>

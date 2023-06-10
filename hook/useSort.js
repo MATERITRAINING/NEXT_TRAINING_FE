@@ -1,23 +1,27 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-function useSort(initial, sortBy = 'desc') {
+function useSort( orderBy = "id", sortBy = "desc" ) {
   let [sort, setSort] = useState({
-    column: initial,
-    order: sortBy,
+    orderBy: orderBy,
+    sortBy: sortBy,
   });
-  function toggleSort(column) {
-    //check is clicked column same with prev clicked column
+  function toggleSort(orderBy,setParams) {
+    setParams((params) => ({
+      ...params,
+      orderBy: sort.orderBy,
+      sortBy: sort.sortBy,
+    }));
+    //check is clicked orderBy same with prev clicked orderBy
 
-   
-    if (column == sort.column) {
+    if (orderBy == sort.orderBy) {
       setSort({
-        column: column,
-        order: sort.order == 'asc' ? 'desc' : 'asc',
+        orderBy: orderBy,
+        sortBy: sort.sortBy == "asc" ? "desc" : "asc",
       });
     } else {
       setSort({
-        column: column,
-        order: 'desc',
+        orderBy: orderBy,
+        sortBy: "desc",
       });
     }
   }
